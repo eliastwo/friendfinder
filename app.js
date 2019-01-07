@@ -36,19 +36,21 @@ var myUsers = [ {
 var userResponse = [];
 var username = '';
 
-function search(nameKey1, nameKey2){
+function search(res, nameKey1, nameKey2){
     for (var i=0; i < myUsers.length; i++) {
 		console.log('the value of nameKey1 is: ' + nameKey1);
 		console.log('The value of nameKey2 is: ' + nameKey2);
 		if (myUsers[i].question1 == nameKey1 && myUsers[i].question2 == nameKey2)
 		{
 			console.log('Your best match is: ' + myUsers[i].name);
-			username = yUsers[i].name;
-			return username;
-			res.send("The best match is: " + myUsers[i]);
+			username = myUsers[i].name;
+
+			//return username;
+			res.json({username: myUsers[i].name});
         } else {
 			console.log('No match');
 		}
+			//console.log(myUsers[i]);
     }
 }
 
@@ -57,12 +59,14 @@ app.get('/', (request, response) =>  response.sendFile(`${__dirname}/index1.html
 app.post('/api/data', (request, response) => {
 	  const postBody = request.body;
 	  console.log(postBody);
-	  response.send(postBody);
+	  //response.send(postBody);
 
 	  userResponse.push(postBody.name, postBody.photo, postBody.question1, postBody.question2, postBody.question3, postBody.question4, postBody.question5, postBody.question6, postBody.question7, postBody.question8, postBody.question9, postBody.question10);
 
-	  search(postBody.question1, postBody.question2);
-	  response.send(myUsers[i].name);
+	  search(response, postBody.question1, postBody.question2);
+	  
+	  //response.send(myUsers[i].name);
 });
+app.get('/response', (req, res) => res.sendFile(`${__dirname}/index2.html`));
 
 app.listen(3010, () => console.info('Application running on port 3010'));
